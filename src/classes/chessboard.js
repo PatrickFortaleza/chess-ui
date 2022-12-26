@@ -23,17 +23,10 @@ export class Board {
             column = index,
             color;
 
-          if (
-            (column % 2 !== 0 && row % 2 !== 0) ||
-            (column % 2 === 0 && row % 2 === 0)
-          ) {
-            color = "white";
-          } else if (
-            (column % 2 == 0 && row % 2 !== 0) ||
-            (row % 2 === 0 && column % 2 !== 0)
-          ) {
-            color = "black";
-          }
+          (column % 2 !== 0 && row % 2 !== 0) ||
+          (column % 2 === 0 && row % 2 === 0)
+            ? (color = "white")
+            : (color = "black");
 
           return new Square({
             color: color,
@@ -50,23 +43,48 @@ export class Board {
 }
 
 export class Move {
-  constructor({ north = 0, east = 0, south = 0, west = 0 }) {
-    this.n = north;
-    this.e = east;
-    this.s = south;
-    this.w = west;
+  constructor({ x, y, isRepeatable, isAttack, isJump }) {
+    this.x = x;
+    this.y = y;
+    this.isRepeatable = isRepeatable ?? false;
+    this.isAttack = isAttack ?? false;
+    this.isJump = isJump ?? false;
   }
 }
 
 export class ChessPiece {
   constructor() {
     this.moves = [];
-    this.canJump = false;
+    this.coords = {
+      row: 0,
+      col: 0,
+    };
+  }
+
+  setCoords({ row, col }) {
+    this.coords = {
+      row,
+      col,
+    };
   }
 }
 
 export class Rook extends ChessPiece {
-  constructor() {
-    this.moves = [new Move({ north: 1 }), new Move({ north: 2 })];
+  constructor({ row, col, color }) {
+    super();
+    this.moves = [
+      new Move({ x: 1 }),
+      new Move({ x: 2 }),
+      new Move({ x: 1, isAttack: true }),
+    ];
+
+    this.color = color;
+
+    this.coords = { row, col };
+
+    this.imageUri =
+      this.color === "black"
+        ? "https://upload.wikimedia.org/wikipedia/commons/c/c7/Chess_pdt45.svg"
+        : "https://upload.wikimedia.org/wikipedia/commons/4/45/Chess_plt45.svg";
   }
 }
