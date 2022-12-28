@@ -41,11 +41,12 @@ export class Board {
 }
 
 export class Move {
-  constructor({ x, y, isRepeatable, isAttack, isJump }) {
+  constructor({ x, y, isRepeatable, isAttack, isJump, isMove }) {
     this.x = x;
     this.y = y;
     this.isRepeatable = isRepeatable ?? false;
     this.isAttack = isAttack ?? false;
+    this.isMove = isMove ?? true;
     this.isJump = isJump ?? false;
   }
 }
@@ -57,7 +58,7 @@ export class ChessPiece {
   }
 }
 
-export class Rook extends ChessPiece {
+export class Pawn extends ChessPiece {
   constructor({ color, id }) {
     super();
 
@@ -68,11 +69,13 @@ export class Rook extends ChessPiece {
         x: color === "black" ? 1 : -1,
         y: color === "black" ? 1 : -1,
         isAttack: true,
+        isMove: false,
       }),
       new Move({
         x: color === "black" ? 1 : -1,
         y: color === "black" ? -1 : 1,
         isAttack: true,
+        isMove: false,
       }),
     ];
 
@@ -84,5 +87,63 @@ export class Rook extends ChessPiece {
       this.color === "black"
         ? "https://upload.wikimedia.org/wikipedia/commons/c/c7/Chess_pdt45.svg"
         : "https://upload.wikimedia.org/wikipedia/commons/4/45/Chess_plt45.svg";
+  }
+}
+
+export class King extends ChessPiece {
+  constructor({ color, id }) {
+    super();
+
+    this.moves = [
+      new Move({
+        x: 1,
+        y: 0,
+        isAttack: true,
+      }),
+      new Move({
+        x: -1,
+        y: 0,
+        isAttack: true,
+      }),
+      new Move({
+        x: 0,
+        y: 1,
+        isAttack: true,
+      }),
+      new Move({
+        x: 0,
+        y: -1,
+        isAttack: true,
+      }),
+      new Move({
+        x: 1,
+        y: 1,
+        isAttack: true,
+      }),
+      new Move({
+        x: -1,
+        y: -1,
+        isAttack: true,
+      }),
+      new Move({
+        x: -1,
+        y: 1,
+        isAttack: true,
+      }),
+      new Move({
+        x: 1,
+        y: -1,
+        isAttack: true,
+      }),
+    ];
+
+    this.id = id;
+
+    this.color = color;
+
+    this.imageUri =
+      this.color === "black"
+        ? "https://upload.wikimedia.org/wikipedia/commons/f/f0/Chess_kdt45.svg"
+        : "https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg";
   }
 }

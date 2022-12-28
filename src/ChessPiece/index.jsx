@@ -10,8 +10,14 @@ export default function ChessPiece({ chessPiece, coords }) {
     for (let i = 0; i < chessPieces.length; i++) {
       let { col: cpColumn, row: cpRow } = chessPieces[i].coords;
 
-      if (cpColumn === column && cpRow === row) return true;
+      if (
+        cpColumn === column &&
+        cpRow === row &&
+        chessPieces[i].piece.color === chessPiece.color
+      )
+        return false;
     }
+    return true;
   };
 
   const checkAttackMove = ({ row, column }) => {
@@ -19,12 +25,9 @@ export default function ChessPiece({ chessPiece, coords }) {
     for (let i = 0; i < chessPieces.length; i++) {
       let { col: cpColumn, row: cpRow } = chessPieces[i].coords;
 
-      if (
-        cpColumn === column &&
-        cpRow === row &&
-        chessPieces[i].piece.color !== chessPiece.color
-      )
-        return true;
+      if (cpColumn === column && cpRow === row) {
+        if (chessPieces[i].piece.color !== chessPiece.color) return true;
+      }
     }
     return false;
   };
@@ -36,7 +39,7 @@ export default function ChessPiece({ chessPiece, coords }) {
       let pMoves = [];
 
       for (let i = 0; i < moves.length; i++) {
-        let { x, y, isAttack } = moves[i];
+        let { x, y, isAttack, isMove } = moves[i];
         let { row, column } = coords;
 
         let targetRow = (row += x),
@@ -44,9 +47,11 @@ export default function ChessPiece({ chessPiece, coords }) {
 
         if (targetRow > 7 || targetColumn > 7) continue;
 
-        if (isAttack) {
+        if (isAttack && !isMove) {
           if (!checkAttackMove({ row: targetRow, column: targetColumn }))
             continue;
+        } else {
+          if (!checkMove({ row: targetRow, column: targetColumn })) continue;
         }
 
         pMoves.push({ row: targetRow, column: targetColumn });

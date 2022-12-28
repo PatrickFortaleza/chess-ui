@@ -13,9 +13,27 @@ export default function Chessboard({ gameState }) {
   const [availableMoves, setAvailableMoves] = useState([]);
   const board = useRef(new Board());
 
+  const checkExistingPiece = ({ column, row }) => {
+    let existing = state.chessPieces.findIndex((cp) => {
+      let { col: chessPieceCol, row: chessPieceRow } = cp.coords;
+
+      if (chessPieceCol === column && row === chessPieceRow) return true;
+      return false;
+    });
+
+    if (existing > -1) return existing;
+    return null;
+  };
+
   const moveChessPiece = ({ id, coords }) => {
+    let existingIndex = checkExistingPiece({
+      column: coords.column,
+      row: coords.row,
+    });
     let state_ = { ...state },
       chessPieces_ = [...state_.chessPieces];
+
+    if (existingIndex !== null) chessPieces_.splice(existingIndex, 1);
 
     let pieceIndex = chessPieces_.findIndex(
       (chessPiece) => chessPiece.piece.id === id
