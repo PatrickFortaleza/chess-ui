@@ -54,6 +54,14 @@
   position: relative
 }
 
+.square.possible {
+  background: mediumseagreen !important;
+}
+
+.chess-piece-ghost {
+  width: 85px;
+  height: 85px;
+}
 
 .coords {
   color: red;
@@ -76,3 +84,5 @@
   height: 100%;
   object-fit: contain;
 }
+
+

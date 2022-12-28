@@ -1,9 +1,8 @@
 export class Square {
-  constructor({ color, column, row, chessPiece }) {
+  constructor({ color, column, row }) {
     this.color = color;
     this.column = column;
     this.row = row;
-    this.chessPiece = chessPiece;
   }
 
   get coords() {
@@ -32,7 +31,6 @@ export class Board {
             color: color,
             column: column,
             row: row,
-            chessPiece: null,
           });
         })
       );
@@ -55,32 +53,32 @@ export class Move {
 export class ChessPiece {
   constructor() {
     this.moves = [];
-    this.coords = {
-      row: 0,
-      col: 0,
-    };
-  }
-
-  setCoords({ row, col }) {
-    this.coords = {
-      row,
-      col,
-    };
+    this.id = null;
   }
 }
 
 export class Rook extends ChessPiece {
-  constructor({ row, col, color }) {
+  constructor({ color, id }) {
     super();
+
     this.moves = [
-      new Move({ x: 1 }),
-      new Move({ x: 2 }),
-      new Move({ x: 1, isAttack: true }),
+      new Move({ x: color === "black" ? 1 : -1, y: 0 }),
+      new Move({ x: color === "black" ? 2 : -2, y: 0 }),
+      new Move({
+        x: color === "black" ? 1 : -1,
+        y: color === "black" ? 1 : -1,
+        isAttack: true,
+      }),
+      new Move({
+        x: color === "black" ? 1 : -1,
+        y: color === "black" ? -1 : 1,
+        isAttack: true,
+      }),
     ];
 
-    this.color = color;
+    this.id = id;
 
-    this.coords = { row, col };
+    this.color = color;
 
     this.imageUri =
       this.color === "black"
