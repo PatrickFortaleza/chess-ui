@@ -58,6 +58,50 @@ export class ChessPiece {
   }
 }
 
+export class Rook extends ChessPiece {
+  constructor({ color, id }) {
+    super();
+
+    this.moves = [
+      new Move({ x: 0, y: 1, isRepeatable: true, isAttack: true }),
+      new Move({ x: 0, y: -1, isRepeatable: true, isAttack: true }),
+      new Move({ x: 1, y: 0, isRepeatable: true, isAttack: true }),
+      new Move({ x: -1, y: 0, isRepeatable: true, isAttack: true }),
+    ];
+
+    this.id = id;
+
+    this.color = color;
+
+    this.imageUri =
+      this.color === "black"
+        ? "https://upload.wikimedia.org/wikipedia/commons/f/ff/Chess_rdt45.svg"
+        : "https://upload.wikimedia.org/wikipedia/commons/7/72/Chess_rlt45.svg";
+  }
+}
+
+export class Bishop extends ChessPiece {
+  constructor({ color, id }) {
+    super();
+
+    this.moves = [
+      new Move({ x: 1, y: 1, isRepeatable: true, isAttack: true }),
+      new Move({ x: -1, y: 1, isRepeatable: true, isAttack: true }),
+      new Move({ x: -1, y: -1, isRepeatable: true, isAttack: true }),
+      new Move({ x: 1, y: -1, isRepeatable: true, isAttack: true }),
+    ];
+
+    this.id = id;
+
+    this.color = color;
+
+    this.imageUri =
+      this.color === "black"
+        ? "https://upload.wikimedia.org/wikipedia/commons/9/98/Chess_bdt45.svg"
+        : "https://upload.wikimedia.org/wikipedia/commons/b/b1/Chess_blt45.svg";
+  }
+}
+
 export class Pawn extends ChessPiece {
   constructor({ color, id }) {
     super();
