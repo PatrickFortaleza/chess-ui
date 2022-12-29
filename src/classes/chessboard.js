@@ -41,11 +41,12 @@ export class Board {
 }
 
 export class Move {
-  constructor({ x, y, maxRepeats, isAttackMove }) {
+  constructor({ x, y, maxRepeats, isAttackMove, disallowAttack }) {
     this.x = x;
     this.y = y;
     this.maxRepeats = maxRepeats ?? 0;
     this.isAttackMove = isAttackMove ?? false;
+    this.disallowAttack = disallowAttack ?? false;
   }
 }
 
@@ -59,7 +60,7 @@ export class ChessPiece {
   possibleMoves({ row, column, chessPieces }) {
     let possibleMoves_ = [];
     for (let i = 0; i < this.moves.length; i++) {
-      let { x, y, isAttackMove, maxRepeats } = this.moves[i];
+      let { x, y, isAttackMove, disallowAttack, maxRepeats } = this.moves[i];
 
       let currentRow = +`${row}`,
         currentColumn = +`${column}`;
@@ -85,7 +86,7 @@ export class ChessPiece {
           let { col: cpColumn, row: cpRow } = chessPieces[i].coords;
 
           if (cpColumn === targetColumn && cpRow === targetRow) {
-            if (chessPieces[i].piece.color !== this.color) {
+            if (chessPieces[i].piece.color !== this.color && !disallowAttack) {
               possibleMoves_.push({
                 row: targetRow,
                 column: targetColumn,
@@ -163,6 +164,7 @@ export class Pawn extends ChessPiece {
         x: 0,
         y: -1,
         maxRepeats: 1,
+        disallowAttack: true,
       }),
       new Move({
         x: -1,
