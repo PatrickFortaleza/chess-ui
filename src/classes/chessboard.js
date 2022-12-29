@@ -41,13 +41,11 @@ export class Board {
 }
 
 export class Move {
-  constructor({ x, y, isRepeatable, isAttack, isJump, isMove }) {
+  constructor({ x, y, maxRepeats, isAttackMove }) {
     this.x = x;
     this.y = y;
-    this.isRepeatable = isRepeatable ?? false;
-    this.isAttack = isAttack ?? false;
-    this.isMove = isMove ?? true;
-    this.isJump = isJump ?? false;
+    this.maxRepeats = maxRepeats ?? 0;
+    this.isAttackMove = isAttackMove ?? false;
   }
 }
 
@@ -55,6 +53,60 @@ export class ChessPiece {
   constructor() {
     this.moves = [];
     this.id = null;
+    this.color = "";
+  }
+
+  possibleMoves({ row, column, chessPieces }) {
+    let possibleMoves_ = [];
+    for (let i = 0; i < this.moves.length; i++) {
+      let { x, y, isAttackMove, maxRepeats } = this.moves[i];
+
+      let currentRow = +`${row}`,
+        currentColumn = +`${column}`;
+
+      let isValidMove = true;
+      for (let j = 0; j <= maxRepeats && isValidMove === true; j++) {
+        let targetRow =
+          this.color === "black" ? currentRow - y : currentRow + y;
+        let targetColumn =
+          this.color === "black" ? currentColumn - x : currentColumn + x;
+
+        if (
+          targetRow > 7 ||
+          targetColumn > 7 ||
+          targetRow < 0 ||
+          targetColumn < 0
+        ) {
+          isValidMove = false;
+          continue;
+        }
+
+        for (let i = 0; i < chessPieces.length; i++) {
+          let { col: cpColumn, row: cpRow } = chessPieces[i].coords;
+
+          if (cpColumn === targetColumn && cpRow === targetRow) {
+            if (chessPieces[i].piece.color !== this.color) {
+              possibleMoves_.push({
+                row: targetRow,
+                column: targetColumn,
+              });
+            }
+            isValidMove = false;
+            break;
+          }
+        }
+
+        if (isValidMove === false) continue;
+        if (isAttackMove) continue;
+
+        currentRow = targetRow;
+        currentColumn = targetColumn;
+
+        possibleMoves_.push({ row: targetRow, column: targetColumn });
+      }
+    }
+
+    return possibleMoves_;
   }
 }
 
@@ -63,10 +115,10 @@ export class Rook extends ChessPiece {
     super();
 
     this.moves = [
-      new Move({ x: 0, y: 1, isRepeatable: true, isAttack: true }),
-      new Move({ x: 0, y: -1, isRepeatable: true, isAttack: true }),
-      new Move({ x: 1, y: 0, isRepeatable: true, isAttack: true }),
-      new Move({ x: -1, y: 0, isRepeatable: true, isAttack: true }),
+      new Move({ x: 0, y: 1, maxRepeats: 999 }),
+      new Move({ x: 0, y: -1, maxRepeats: 999 }),
+      new Move({ x: 1, y: 0, maxRepeats: 999 }),
+      new Move({ x: -1, y: 0, maxRepeats: 999 }),
     ];
 
     this.id = id;
@@ -85,10 +137,10 @@ export class Bishop extends ChessPiece {
     super();
 
     this.moves = [
-      new Move({ x: 1, y: 1, isRepeatable: true, isAttack: true }),
-      new Move({ x: -1, y: 1, isRepeatable: true, isAttack: true }),
-      new Move({ x: -1, y: -1, isRepeatable: true, isAttack: true }),
-      new Move({ x: 1, y: -1, isRepeatable: true, isAttack: true }),
+      new Move({ x: 1, y: 1, maxRepeats: 999 }),
+      new Move({ x: -1, y: 1, maxRepeats: 999 }),
+      new Move({ x: -1, y: -1, maxRepeats: 999 }),
+      new Move({ x: 1, y: -1, maxRepeats: 999 }),
     ];
 
     this.id = id;
@@ -107,19 +159,20 @@ export class Pawn extends ChessPiece {
     super();
 
     this.moves = [
-      new Move({ x: color === "black" ? 1 : -1, y: 0 }),
-      new Move({ x: color === "black" ? 2 : -2, y: 0 }),
       new Move({
-        x: color === "black" ? 1 : -1,
-        y: color === "black" ? 1 : -1,
-        isAttack: true,
-        isMove: false,
+        x: 0,
+        y: -1,
+        maxRepeats: 1,
       }),
       new Move({
-        x: color === "black" ? 1 : -1,
-        y: color === "black" ? -1 : 1,
-        isAttack: true,
-        isMove: false,
+        x: -1,
+        y: -1,
+        isAttackMove: true,
+      }),
+      new Move({
+        x: 1,
+        y: -1,
+        isAttackMove: true,
       }),
     ];
 
@@ -134,51 +187,45 @@ export class Pawn extends ChessPiece {
   }
 }
 
+export class Queen extends ChessPiece {
+  constructor({ color, id }) {
+    super();
+
+    this.moves = [
+      new Move({ x: 0, y: 1, maxRepeats: 999 }),
+      new Move({ x: 0, y: -1, maxRepeats: 999 }),
+      new Move({ x: 1, y: 0, maxRepeats: 999 }),
+      new Move({ x: -1, y: 0, maxRepeats: 999 }),
+      new Move({ x: 1, y: 1, maxRepeats: 999 }),
+      new Move({ x: -1, y: 1, maxRepeats: 999 }),
+      new Move({ x: -1, y: -1, maxRepeats: 999 }),
+      new Move({ x: 1, y: -1, maxRepeats: 999 }),
+    ];
+
+    this.id = id;
+
+    this.color = color;
+
+    this.imageUri =
+      this.color === "black"
+        ? "https://upload.wikimedia.org/wikipedia/commons/4/47/Chess_qdt45.svg"
+        : "https://upload.wikimedia.org/wikipedia/commons/1/15/Chess_qlt45.svg";
+  }
+}
+
 export class King extends ChessPiece {
   constructor({ color, id }) {
     super();
 
     this.moves = [
-      new Move({
-        x: 1,
-        y: 0,
-        isAttack: true,
-      }),
-      new Move({
-        x: -1,
-        y: 0,
-        isAttack: true,
-      }),
-      new Move({
-        x: 0,
-        y: 1,
-        isAttack: true,
-      }),
-      new Move({
-        x: 0,
-        y: -1,
-        isAttack: true,
-      }),
-      new Move({
-        x: 1,
-        y: 1,
-        isAttack: true,
-      }),
-      new Move({
-        x: -1,
-        y: -1,
-        isAttack: true,
-      }),
-      new Move({
-        x: -1,
-        y: 1,
-        isAttack: true,
-      }),
-      new Move({
-        x: 1,
-        y: -1,
-        isAttack: true,
-      }),
+      new Move({ x: 0, y: 1 }),
+      new Move({ x: 0, y: -1 }),
+      new Move({ x: 1, y: 0 }),
+      new Move({ x: -1, y: 0 }),
+      new Move({ x: 1, y: 1 }),
+      new Move({ x: -1, y: 1 }),
+      new Move({ x: -1, y: -1 }),
+      new Move({ x: 1, y: -1 }),
     ];
 
     this.id = id;
@@ -189,5 +236,55 @@ export class King extends ChessPiece {
       this.color === "black"
         ? "https://upload.wikimedia.org/wikipedia/commons/f/f0/Chess_kdt45.svg"
         : "https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg";
+  }
+}
+
+export class Knight extends ChessPiece {
+  constructor({ color, id }) {
+    super();
+
+    this.moves = [
+      new Move({
+        x: -2,
+        y: -1,
+      }),
+      new Move({
+        x: -2,
+        y: 1,
+      }),
+      new Move({
+        x: -1,
+        y: -2,
+      }),
+      new Move({
+        x: -1,
+        y: 2,
+      }),
+      new Move({
+        x: 2,
+        y: -1,
+      }),
+      new Move({
+        x: 2,
+        y: 1,
+      }),
+      new Move({
+        x: 1,
+        y: -2,
+      }),
+      new Move({
+        x: 1,
+        y: 2,
+      }),
+    ];
+
+    this.id = id;
+
+    this.color = color;
+
+    this.imageUri =
+      this.color === "black"
+        ? "https://upload.wikimedia.org/wikipedia/commons/e/ef/Chess_ndt45.svg"
+        : "https://upload.wikimedia.org/wikipedia/commons/7/70/Chess_nlt45.svg";
   }
 }
