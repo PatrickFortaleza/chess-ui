@@ -58,7 +58,6 @@ export class ChessPiece {
 
   possibleMoves({ row, column, chessPieces }) {
     let possibleMoves_ = [];
-    console.log(this.moves);
     for (let i = 0; i < this.moves.length; i++) {
       let { x, y, isAttackMove, maxRepeats } = this.moves[i];
 
@@ -67,8 +66,10 @@ export class ChessPiece {
 
       let isValidMove = true;
       for (let j = 0; j <= maxRepeats && isValidMove === true; j++) {
-        let targetRow = currentRow + y;
-        let targetColumn = currentColumn + x;
+        let targetRow =
+          this.color === "black" ? currentRow - y : currentRow + y;
+        let targetColumn =
+          this.color === "black" ? currentColumn - x : currentColumn + x;
 
         if (
           targetRow > 7 ||
@@ -158,41 +159,21 @@ export class Pawn extends ChessPiece {
     super();
 
     this.moves = [
-      // new Move({ y: color === "black" ? 1 : -1, x: 0, maxRepeats: 3 }),
-      // new Move({
-      //   x: 2,
-      //   y: 0,
-      //   maxRepeats: 1,
-      //   // isAttackMove: true,
-      // }),
       new Move({
         x: 0,
         y: -1,
-        isAttackMove: false,
         maxRepeats: 1,
       }),
       new Move({
         x: -1,
         y: -1,
         isAttackMove: true,
-        maxRepeats: 0,
       }),
       new Move({
         x: 1,
         y: -1,
         isAttackMove: true,
-        maxRepeats: 0,
       }),
-      // new Move({
-      //   x: -1,
-      //   y: 1,
-      //   isAttackMove: true,
-      // }),
-      // new Move({
-      //   x: color === "black" ? 1 : -1,
-      //   y: color === "black" ? -1 : 1,
-      //   isAttackMove: true,
-      // }),
     ];
 
     this.id = id;
@@ -203,5 +184,107 @@ export class Pawn extends ChessPiece {
       this.color === "black"
         ? "https://upload.wikimedia.org/wikipedia/commons/c/c7/Chess_pdt45.svg"
         : "https://upload.wikimedia.org/wikipedia/commons/4/45/Chess_plt45.svg";
+  }
+}
+
+export class Queen extends ChessPiece {
+  constructor({ color, id }) {
+    super();
+
+    this.moves = [
+      new Move({ x: 0, y: 1, maxRepeats: 999 }),
+      new Move({ x: 0, y: -1, maxRepeats: 999 }),
+      new Move({ x: 1, y: 0, maxRepeats: 999 }),
+      new Move({ x: -1, y: 0, maxRepeats: 999 }),
+      new Move({ x: 1, y: 1, maxRepeats: 999 }),
+      new Move({ x: -1, y: 1, maxRepeats: 999 }),
+      new Move({ x: -1, y: -1, maxRepeats: 999 }),
+      new Move({ x: 1, y: -1, maxRepeats: 999 }),
+    ];
+
+    this.id = id;
+
+    this.color = color;
+
+    this.imageUri =
+      this.color === "black"
+        ? "https://upload.wikimedia.org/wikipedia/commons/4/47/Chess_qdt45.svg"
+        : "https://upload.wikimedia.org/wikipedia/commons/1/15/Chess_qlt45.svg";
+  }
+}
+
+export class King extends ChessPiece {
+  constructor({ color, id }) {
+    super();
+
+    this.moves = [
+      new Move({ x: 0, y: 1 }),
+      new Move({ x: 0, y: -1 }),
+      new Move({ x: 1, y: 0 }),
+      new Move({ x: -1, y: 0 }),
+      new Move({ x: 1, y: 1 }),
+      new Move({ x: -1, y: 1 }),
+      new Move({ x: -1, y: -1 }),
+      new Move({ x: 1, y: -1 }),
+    ];
+
+    this.id = id;
+
+    this.color = color;
+
+    this.imageUri =
+      this.color === "black"
+        ? "https://upload.wikimedia.org/wikipedia/commons/f/f0/Chess_kdt45.svg"
+        : "https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg";
+  }
+}
+
+export class Knight extends ChessPiece {
+  constructor({ color, id }) {
+    super();
+
+    this.moves = [
+      new Move({
+        x: -2,
+        y: -1,
+      }),
+      new Move({
+        x: -2,
+        y: 1,
+      }),
+      new Move({
+        x: -1,
+        y: -2,
+      }),
+      new Move({
+        x: -1,
+        y: 2,
+      }),
+      new Move({
+        x: 2,
+        y: -1,
+      }),
+      new Move({
+        x: 2,
+        y: 1,
+      }),
+      new Move({
+        x: 1,
+        y: -2,
+      }),
+      new Move({
+        x: 1,
+        y: 2,
+      }),
+    ];
+
+    this.id = id;
+
+    this.color = color;
+
+    this.imageUri =
+      this.color === "black"
+        ? "https://upload.wikimedia.org/wikipedia/commons/e/ef/Chess_ndt45.svg"
+        : "https://upload.wikimedia.org/wikipedia/commons/7/70/Chess_nlt45.svg";
   }
 }

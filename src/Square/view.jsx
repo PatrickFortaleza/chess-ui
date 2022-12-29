@@ -11,7 +11,7 @@ export default function SquareView({
     <div
       className={`square ${isPossible ? "possible" : "impossible"}`}
       style={{
-        background: square.color === "black" ? "rgba(0,0,0, 0.125)" : "white",
+        background: square.color === "black" ? "#cccccc" : "white",
       }}
       ref={dropRef}
     >

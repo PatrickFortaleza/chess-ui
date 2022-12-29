@@ -42,8 +42,8 @@
 
 .chessboard {
   display: grid;
-  width: 700px;
-  height: 700px;
+  width: 300px;
+  height: 300px;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
   grid-gap: -1px;
