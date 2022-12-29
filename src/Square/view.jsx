@@ -15,7 +15,7 @@ export default function SquareView({
       }}
       ref={dropRef}
     >
-      <span className="coords">{`${square.coords}`}</span>
+      {/* <span className="coords">{`${square.coords}`}</span> */}
 
       {chessPiece && (
         <ChessPiece chessPiece={chessPiece.piece} coords={chessPiece.coords} />
