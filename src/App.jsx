@@ -76,7 +76,11 @@ function App() {
         piece: new Queen({ color: "white", id: uuid() }),
         coords: { row: 7, col: 4 },
       },
-
+      /**
+       * ==============================
+       * TEAM BLACK
+       * ==============================
+       */
       {
         piece: new Pawn({ color: "black", id: uuid() }),
         coords: { row: 1, col: 0 },
@@ -141,48 +145,6 @@ function App() {
         piece: new Queen({ color: "black", id: uuid() }),
         coords: { row: 0, col: 4 },
       },
-
-      // {
-      //   piece: new Knight({ color: "white", id: uuid() }),
-      //   coords: {
-      //     row: 3,
-      //     col: 4,
-      //   },
-      // },
-      // {
-      //   piece: new Queen({ color: "white", id: uuid() }),
-      //   coords: {
-      //     row: 3,
-      //     col: 7,
-      //   },
-      // },
-      // {
-      //   piece: new King({ color: "white", id: uuid() }),
-      //   coords: {
-      //     row: 6,
-      //     col: 7,
-      //   },
-      // },
-      // {
-      //   piece: new Pawn({ color: "white", id: uuid() }),
-      //   coords: { row: 7, col: 2 },
-      // },
-      // {
-      //   piece: new Rook({ color: "white", id: uuid() }),
-      //   coords: { row: 3, col: 2 },
-      // },
-      // {
-      //   piece: new Pawn({ color: "black", id: uuid() }),
-      //   coords: { row: 6, col: 1 },
-      // },
-      // {
-      //   piece: new Bishop({ color: "white", id: uuid() }),
-      //   coords: { row: 5, col: 3 },
-      // },
-      // {
-      //   piece: new Bishop({ color: "white", id: uuid() }),
-      //   coords: { row: 6, col: 3 },
-      // },
     ],
   });
 
