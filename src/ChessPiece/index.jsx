@@ -108,40 +108,15 @@ export default function ChessPiece({ chessPiece, coords }) {
 
   const possibleMoves = useMemo(() => {
     try {
-      let { moves } = chessPiece;
+      let { row, column } = coords;
 
-      let pMoves = [];
-
-      for (let i = 0; i < moves.length; i++) {
-        let { x, y, isAttack, isMove, isRepeatable } = moves[i];
-        let { row, column } = coords;
-
-        let targetRow = (row += x),
-          targetColumn = (column += y);
-
-        if (targetRow > 7 || targetColumn > 7) continue;
-
-        if (isRepeatable) {
-          let repeatableMoves = generateRepeatableMoves(moves[i], {
-            ...coords,
-          });
-          pMoves = [...pMoves, ...repeatableMoves];
-
-          continue;
-        }
-
-        if (isAttack && !isMove) {
-          if (!checkAttackMove({ row: targetRow, column: targetColumn }))
-            continue;
-        } else {
-          // if (!checkMove({ row: targetRow, column: targetColumn })) continue;
-        }
-
-        pMoves.push({ row: targetRow, column: targetColumn });
-      }
-
-      return pMoves;
+      return chessPiece.possibleMoves({
+        row,
+        column,
+        chessPieces: chessPieces,
+      });
     } catch (error) {
+      console.log(error);
       return [];
     }
   }, [coords, chessPieces]);
