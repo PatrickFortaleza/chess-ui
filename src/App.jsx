@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import "./App.css";
 import Chessboard from "./Chessboard";
 import { Pawn, Bishop, Rook, Knight, Queen, King } from "./classes/chessboard";
