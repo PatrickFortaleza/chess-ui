@@ -33,7 +33,7 @@ export default function ChessboardView({
             </React.Fragment>
           ))}
       </div>
-      <Preview>{generatePreview}</Preview>
+      {isMobile && <Preview>{generatePreview}</Preview>}
     </DndProvider>
   );
 }
