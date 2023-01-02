@@ -32,6 +32,7 @@ function App() {
         <>
           <Chessboard
             gameState={initialGameState}
+            loaded={welcomeModal === false}
             key={retries}
             winState={{
               cls: Knight,
@@ -49,10 +50,12 @@ function App() {
             }}
           />
 
-          <div className="instructions">
+          <div
+            className={`instructions ${!welcomeModal ? "loaded" : "default"}`}
+          >
             <h4>Solve the puzzle</h4>
             <p>
-              White to win. Drag and drop a single chess piece to win the game.
+              WHITE to win. Drag and drop a SINGLE chess piece to win the game.
             </p>
           </div>
 
@@ -60,7 +63,7 @@ function App() {
             <div className="modal-background">
               <div className="modal">
                 <h3>Challenge</h3>
-                <p>Please solve the chess puzzle to move on.</p>
+                <p>Please solve the chess puzzle to access the site.</p>
                 <button onClick={() => setWelcomeModal(false)}>Okay</button>
               </div>
             </div>

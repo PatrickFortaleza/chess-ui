@@ -8,7 +8,7 @@ export function useChessboard() {
   return useContext(ChessboardContext);
 }
 
-export default function Chessboard({ gameState, winState }) {
+export default function Chessboard({ gameState, winState, loaded }) {
   const [state, setState] = useState(gameState);
   const [availableMoves, setAvailableMoves] = useState([]);
   const board = useRef(new Board());
@@ -82,6 +82,7 @@ export default function Chessboard({ gameState, winState }) {
   const value = {
     moveChessPiece,
     chessPieces: state.chessPieces,
+    boardLoaded: loaded,
     availableMoves: {
       set: setAvailableMoves,
       val: availableMoves,
