@@ -17,6 +17,20 @@ export default function ChessboardView({
       options={{ enableTouchEvents: true }}
     >
       <div className="chessboard">
+        <div className="chessboard-marker row">
+          {[...Array(8)].map((_, index = index + 1) => (
+            <span className="square" key={index}>
+              <span>{Math.abs(index + 1 - 9)}</span>
+            </span>
+          ))}
+        </div>
+        <div className="chessboard-marker column">
+          {[...Array(8)].map((_, index = index + 1) => (
+            <span className="square" key={index}>
+              <span>{String.fromCharCode(97 + index)}</span>
+            </span>
+          ))}
+        </div>
         {Array.isArray(board) &&
           board.map((row, index) => (
             <React.Fragment key={index}>

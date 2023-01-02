@@ -5,7 +5,7 @@ import { useChessboard } from "../Chessboard";
 
 export default function Square({ square, chessPieces }) {
   const { availableMoves } = useChessboard();
-  const [isPossible, setIsPossible] = useState(false);
+  const [isPossibleMove, setIsPossibleMove] = useState(false);
 
   const chessPiece = useMemo(() => {
     let { row, column } = square;
@@ -42,10 +42,10 @@ export default function Square({ square, chessPieces }) {
       let { column, row } = availableMoves.val[i];
       let { column: sqColumn, row: sqRow } = square;
 
-      if (column === sqColumn && row === sqRow) return setIsPossible(true);
+      if (column === sqColumn && row === sqRow) return setIsPossibleMove(true);
     }
 
-    setIsPossible(false);
+    setIsPossibleMove(false);
   };
 
   useEffect(() => {
@@ -56,7 +56,7 @@ export default function Square({ square, chessPieces }) {
     <SquareView
       square={square}
       chessPiece={chessPiece}
-      isPossible={isPossible}
+      isPossibleMove={isPossibleMove}
       dropRef={drop}
     />
   );
