@@ -8,10 +8,29 @@ export function useChessboard() {
   return useContext(ChessboardContext);
 }
 
-export default function Chessboard({ gameState }) {
+export default function Chessboard({ gameState, winState }) {
   const [state, setState] = useState(gameState);
   const [availableMoves, setAvailableMoves] = useState([]);
   const board = useRef(new Board());
+
+  const evaluateWinState = ({ chessPieces }) => {
+    let { row, col } = winState.targetCoords,
+      { cls, color, winCallback, loseCallback } = winState;
+
+    for (let i = 0; i < chessPieces.length; i++) {
+      let { col: cpCol, row: cpRow } = chessPieces[i].coords;
+
+      if (row === cpRow && col === cpCol) {
+        let { piece } = chessPieces[i];
+
+        if (piece instanceof cls && piece.color === color) {
+          return winCallback();
+        }
+      }
+    }
+
+    return loseCallback();
+  };
 
   const checkExistingPiece = ({ column, row }) => {
     let existing = state.chessPieces.findIndex((cp) => {
@@ -48,6 +67,8 @@ export default function Chessboard({ gameState }) {
       ...state_,
       chessPieces: [...chessPieces_],
     });
+
+    evaluateWinState({ chessPieces: chessPieces_ });
   };
 
   const generatePreview = ({ item, style }) => {
