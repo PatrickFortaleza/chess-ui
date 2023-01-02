@@ -148,10 +148,14 @@ export class Bishop extends ChessPiece {
 
     this.color = color;
 
-    this.imageUri =
-      this.color === "black"
-        ? "https://upload.wikimedia.org/wikipedia/commons/9/98/Chess_bdt45.svg"
-        : "https://upload.wikimedia.org/wikipedia/commons/b/b1/Chess_blt45.svg";
+    this.imageUris = {
+      black:
+        "https://upload.wikimedia.org/wikipedia/commons/9/98/Chess_bdt45.svg",
+      white:
+        "https://upload.wikimedia.org/wikipedia/commons/b/b1/Chess_blt45.svg",
+    };
+
+    this.imageUri = this.imageUris[color];
   }
 }
 

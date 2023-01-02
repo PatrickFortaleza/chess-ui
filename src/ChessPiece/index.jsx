@@ -1,10 +1,12 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import ChessPieceView from "./view";
 import { useDrag } from "react-dnd";
 import { useChessboard } from "../Chessboard";
 
 export default function ChessPiece({ chessPiece, coords }) {
-  const { moveChessPiece, availableMoves, chessPieces } = useChessboard();
+  const { moveChessPiece, availableMoves, chessPieces, boardLoaded } =
+    useChessboard();
+  const delay = useRef(getRandomArbitrary(0, 0.5));
 
   const possibleMoves = useMemo(() => {
     try {
@@ -63,5 +65,16 @@ export default function ChessPiece({ chessPiece, coords }) {
     [chessPiece, coords]
   );
 
-  return <ChessPieceView chessPiece={chessPiece} dragRef={drag} />;
+  return (
+    <ChessPieceView
+      chessPiece={chessPiece}
+      dragRef={drag}
+      delay={delay?.current ?? 0}
+      boardLoaded={boardLoaded}
+    />
+  );
+}
+
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
 }

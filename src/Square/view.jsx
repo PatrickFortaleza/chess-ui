@@ -5,13 +5,13 @@ export default function SquareView({
   square,
   chessPiece,
   dropRef,
-  isPossible,
+  isPossibleMove,
 }) {
   return (
     <div
-      className={`square ${isPossible ? "possible" : "impossible"}`}
+      className={`square ${isPossibleMove ? "possible" : "impossible"}`}
       style={{
-        background: square.color === "black" ? "#cccccc" : "white",
+        background: square.color === "black" ? "#474747" : "#777777",
       }}
       ref={dropRef}
     >
